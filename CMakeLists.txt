@@ -12,8 +12,9 @@ set(core-files
         argparser.hpp
         timer.hpp
         timer.cpp
-        exception.hpp
-        exception.cpp)
+        mario_game.hpp
+        mario_game.cpp
+        )
 
 add_executable(Mario
         main.cpp
@@ -25,6 +26,7 @@ set(main-test
 add_executable(tests
         ${main-test}
         tests/timer-test.cpp
+        tests/mario-game-test.cpp
         ${core-files})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -44,4 +46,4 @@ if (${CMAKE_VERSION} VERSION_GREATER 3.5)
 endif ()
 
 enable_testing()
-add_test(NAME timer COMMAND tests)
+add_test(NAME tests COMMAND tests)

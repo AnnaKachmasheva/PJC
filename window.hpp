@@ -33,16 +33,16 @@ public:
      */
     explicit Window(std::ostream &outputStream, size_t width, size_t height);
 
-    //    ~Window() { outputStream << "Konec win\n"; };
+    ~Window() { outputStream << "Konec\n"; };
     /*
      * Prekresleni hraciho pole
      *
-     * point - souradnice aktualne zadaneho bodu
-     * tic - hraci pole
-     * player - typ hrace - kolecko/krizek
-     * count - casove skore hracu
+     * player_area - hraci pole
+     * timer - casovac
+     * coins - mince
+     * lives
      */
-    void redraw(std::vector<p_field> player_area, timer count, int coins, int lives);
+    void redraw(std::vector<p_field> player_area, timer timer, int coins, int lives);
 
     /*
      * Priprava textu nad hracim polem
