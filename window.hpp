@@ -25,15 +25,15 @@ enum p_field {
     coin
 };
 
-class Window {
+class window {
 public:
 
     /*
      * Konstruktor tridy
      */
-    explicit Window(std::ostream &outputStream, size_t width, size_t height);
+    explicit window(std::ostream &outputStream, size_t width, size_t height);
 
-    ~Window() { outputStream << "Konec\n"; };
+    ~window() { outputStream << "Konec\n"; };
     /*
      * Prekresleni hraciho pole
      *
@@ -42,12 +42,17 @@ public:
      * coins - mince
      * lives
      */
-    void redraw(std::vector<p_field> player_area, timer timer, int coins, int lives);
+    void redraw(std::vector<p_field> player_area, timer timer, int coins, int lives, bool pause);
 
     /*
      * Priprava textu nad hracim polem
      */
     void render_header(int coins, int lives);
+
+    /*
+     * Priprava textu pod hracim polem
+     */
+    void render_footer(bool pause);
 
     /*
      * Prekresleni hraciho pole

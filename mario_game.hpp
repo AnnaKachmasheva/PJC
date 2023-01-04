@@ -76,10 +76,10 @@ public:
     void minus_live();
 
 private:
-    bool quit;                          // je konec hry?
-    bool pause;                         // hra pozastavena?
+    bool quit = false;                          // je konec hry?
+    bool pause = true;                          // hra pozastavena?
 
-    std::unique_ptr<Window> win;                                            // hraci okenko
+    std::unique_ptr<window> win;                                            // hraci okenko
     size_t width, height;                                                   // rozmery hraci plochy, pocet znacek v rade pro vyhru
     std::vector<p_field> playing_area;                                      // hraci plocha
     int all_coins, all_enemies, all_lives;                                  //pocet minci/nepriteli, zivotu

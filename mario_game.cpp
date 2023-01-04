@@ -32,8 +32,8 @@ mario_game::mario_game() : quit(false),
     }
 
     //init game window
-    win = std::make_unique<Window>(std::cout, width, height);
-    win->redraw(playing_area, timer, cur_coins, all_lives);
+    win = std::make_unique<window>(std::cout, width, height);
+    win->redraw(playing_area, timer, cur_coins, all_lives, pause);
 }
 
 mario_game::mario_game(int coins, int enemies, int lives) : mario_game() {
@@ -74,48 +74,10 @@ void mario_game::control() {
 }
 
 void mario_game::move() {
-    if (is_up) {
-        is_up = false;
-
-        if ((player_position - width) >= 0) {
-            if (playing_area[player_position - width] == earth) {
-                return;
-            } else if (playing_area[player_position - width] == coin) {
-                plus_coin();
-            } else if (playing_area[player_position - width] == enemy) {
-                all_enemies = all_enemies - 1;
-                minus_live();
-            }
-
-            this->playing_area[player_position] = nothing;
-            player_position = player_position - width;
-            this->playing_area[player_position] = mario;
-        }
-    }
-
-    if (is_down) {
-        is_down = false;
-
-        if ((player_position + width) < playing_area.size()) {
-            if (playing_area[player_position + width] == earth) {
-                return;
-            } else if (playing_area[player_position + width] == coin) {
-                plus_coin();
-            } else if (playing_area[player_position + width] == enemy) {
-                all_enemies = all_enemies - 1;
-                minus_live();
-            }
-
-            this->playing_area[player_position] = nothing;
-            player_position = player_position + width;
-            this->playing_area[player_position] = mario;
-        }
-    }
-
     if (is_left) {
         is_left = false;
 
-        size_t next_position = (player_position + 1) % width;
+        size_t next_position = (player_position - 1) % width;
 
         if ((next_position - 1) >= 0) {
             if (playing_area[player_position - 1] == earth) {
@@ -155,13 +117,51 @@ void mario_game::move() {
             this->playing_area[player_position] = mario;
         }
     }
+
+    if (is_up) {
+        is_up = false;
+
+        if ((player_position - width) >= 0) {
+            if (playing_area[player_position - width] == earth) {
+                return;
+            } else if (playing_area[player_position - width] == coin) {
+                plus_coin();
+            } else if (playing_area[player_position - width] == enemy) {
+                all_enemies = all_enemies - 1;
+                minus_live();
+            }
+
+            this->playing_area[player_position] = nothing;
+            player_position = player_position - width;
+            this->playing_area[player_position] = mario;
+        }
+    }
+
+    if (is_down) {
+        is_down = false;
+
+        if ((player_position + width) < playing_area.size()) {
+            if (playing_area[player_position + width] == earth) {
+                return;
+            } else if (playing_area[player_position + width] == coin) {
+                plus_coin();
+            } else if (playing_area[player_position + width] == enemy) {
+                all_enemies = all_enemies - 1;
+                minus_live();
+            }
+
+            this->playing_area[player_position] = nothing;
+            player_position = player_position + width;
+            this->playing_area[player_position] = mario;
+        }
+    }
 }
 
 void mario_game::output_area() {
     std::unique_lock<std::mutex> lg(mutex);
     cvar.wait(lg);
-    if (!get_pause())
-        win->redraw(playing_area, timer, get_coins(), get_lives());
+    if (!get_pause() && !quit)
+        win->redraw(playing_area, timer, cur_coins, all_lives, pause);
 }
 
 void mario_game::compute() {
@@ -195,12 +195,15 @@ void mario_game::input() {
 
     if (c == 'w') {
         is_up = true;
+        move();
         cvar.notify_one();
     } else if (c == 'a') {
         is_left = true;
+        move();
         cvar.notify_one();
     } else if (c == 'd') {
         is_right = true;
+        move();
         cvar.notify_one();
     } else if (c == 'q') {
         set_quit(true);

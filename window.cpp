@@ -4,13 +4,12 @@
 #include <chrono>
 #include <utility>
 
-Window::Window(std::ostream &outputStream, size_t width, size_t height) :
+window::window(std::ostream &outputStream, size_t width, size_t height) :
         outputStream(outputStream),
         width(width),
         height(height) {}
 
-
-void Window::redraw(std::vector<p_field> player_area, timer timer, int coins, int lives) {
+void window::redraw(std::vector<p_field> player_area, timer timer, int coins, int lives, bool pause) {
     std::stringstream ss;
     ss << timer.elapsed_minutes() << ":" << timer.get_seconds();
     time = ss.str();
@@ -20,14 +19,14 @@ void Window::redraw(std::vector<p_field> player_area, timer timer, int coins, in
     render_header(coins, lives);
 }
 
-void Window::redrawWIN(bool is_win) {
+void window::redrawWIN(bool is_win) {
     if (is_win)
         outputStream << COLOR_WIN << "\n\r   !!! VYHRAL !!!   \n" << ANSI_COLOR_RESET;
     else
         outputStream << COLOR_DRAW << "\n\r   === PROHRAL ===   \n" << ANSI_COLOR_RESET;
 }
 
-void Window::render_header(int coins, int lives) {
+void window::render_header(int coins, int lives) {
     std::stringstream ss;
     ss << COLOR_GREEN << " SCORE: " << ANSI_COLOR_RESET;
     ss << COLOR_RED << "   LIVES: " << lives << ANSI_COLOR_RESET;
@@ -37,7 +36,13 @@ void Window::render_header(int coins, int lives) {
     text = ss.str();
 }
 
-void Window::render_window(std::vector<p_field> player_area) {
+void window::render_footer(bool pause) {
+    std::stringstream ss;
+    ss << COLOR_GREEN << " PAUSE: " << (pause ? "ON" : "OFF") << ANSI_COLOR_RESET;
+    text = ss.str();
+}
+
+void window::render_window(std::vector<p_field> player_area) {
     std::stringstream buffer;
     buffer << ANSI_CLEAR << ANSI_COLOR_RESET;
     buffer << "\r";

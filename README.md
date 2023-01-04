@@ -13,7 +13,7 @@ cmake -Bcmake-build-debug -H. -DCMAKE_BUILD_TYPE=Debug
 cmake --build cmake-build-debug
 ```
 
-## SPUŠTĚNÍ A PŘEPÍNAČE
+## SPUŠTĚNÍ A PŘEPÍNANÍ
 Hra se spouští z příkazové řádky.
 Parametry nastavení programu:
 - -c (-coins) - počet minci,
@@ -25,7 +25,7 @@ Pokud nejsou parametry programuza dány, jsou využity předefinované hodnoty: 
 Příklady spuštění programu: 
 ```bash
 Mario
-Mario -c 5 -h 5 -c 5
+Mario -c 5 -e 5 -l 5
 ```
 
 ## OVLÁDÁNÍ PROGRAMU
