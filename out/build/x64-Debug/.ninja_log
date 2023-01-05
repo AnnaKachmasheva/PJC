@@ -1,0 +1,6 @@
+# ninja log v5
+60	1587	6945309993792851	CMakeFiles/Mario.dir/timer.cpp.obj	40b92a2da2751499
+30	1991	6945309997954388	CMakeFiles/Mario.dir/window.cpp.obj	c9499b1c76ffb714
+72	1597	6945309993862842	CMakeFiles/Mario.dir/exception.cpp.obj	a45150dc357d1fba
+46	1729	6945309995293683	CMakeFiles/Mario.dir/argparser.cpp.obj	c7fc70bde6361aed
+9	2719	6945310005220379	CMakeFiles/Mario.dir/main.cpp.obj	cd310d7029d121b3

@@ -1,0 +1,5 @@
+C:/mujprojekt-master/out/build/x64-Debug/CMakeFiles/Mario.dir
+C:/mujprojekt-master/out/build/x64-Debug/CMakeFiles/tests.dir
+C:/mujprojekt-master/out/build/x64-Debug/CMakeFiles/test.dir
+C:/mujprojekt-master/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/mujprojekt-master/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
