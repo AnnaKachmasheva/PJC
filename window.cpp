@@ -4,8 +4,8 @@
 #include <chrono>
 #include <utility>
 
-window::window(std::ostream &outputStream, size_t width, size_t height) :
-        outputStream(outputStream),
+window::window(std::ostream &os, size_t width, size_t height) :
+        os(os),
         width(width),
         height(height) {}
 
@@ -13,32 +13,28 @@ void window::redraw(std::vector<p_field> player_area, timer timer, int coins, in
     std::stringstream ss;
     ss << timer.elapsed_minutes() << ":" << timer.get_seconds();
     time = ss.str();
-
+    render_header(coins, lives, pause);
     render_window(std::move(player_area));
-
-    render_header(coins, lives);
 }
 
 void window::redrawWIN(bool is_win) {
-    if (is_win)
-        outputStream << COLOR_WIN << "\n\r   !!! VYHRAL !!!   \n" << ANSI_COLOR_RESET;
-    else
-        outputStream << COLOR_DRAW << "\n\r   === PROHRAL ===   \n" << ANSI_COLOR_RESET;
+    std::stringstream ss;
+    if (is_win) {
+        ss << COLOR_WIN << "\n\r   !!! VYHRAL !!!   \n" << ANSI_COLOR_RESET;
+    } else {
+        ss << COLOR_DRAW << "\n\r   === PROHRAL ===   \n" << ANSI_COLOR_RESET;
+    }
+    os << ss.str() << std::endl;;
 }
 
-void window::render_header(int coins, int lives) {
+void window::render_header(int coins, int lives, bool pause) {
     std::stringstream ss;
     ss << COLOR_GREEN << " SCORE: " << ANSI_COLOR_RESET;
     ss << COLOR_RED << "   LIVES: " << lives << ANSI_COLOR_RESET;
     ss << COLOR_YELLOW << "   COINS: " << coins << ANSI_COLOR_RESET;
     ss << "   TIME: " << time;
+    ss << COLOR_BLUE << "   PAUSE: " << (pause ? "ON" : "OFF") << ANSI_COLOR_RESET;
 
-    text = ss.str();
-}
-
-void window::render_footer(bool pause) {
-    std::stringstream ss;
-    ss << COLOR_GREEN << " PAUSE: " << (pause ? "ON" : "OFF") << ANSI_COLOR_RESET;
     text = ss.str();
 }
 
@@ -85,5 +81,5 @@ void window::render_window(std::vector<p_field> player_area) {
     buffer << std::endl;
 
     buffer << "\r" << std::noskipws << text;
-    outputStream << buffer.str() << std::endl;;
+    os << buffer.str() << std::endl;;
 }

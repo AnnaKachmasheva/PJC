@@ -12,7 +12,7 @@
 #include "argparser.hpp"
 #include "timer.hpp"
 
-#define PERIOD_COUNTER 400
+#define PERIOD_COUNTER 180
 #define DEFAULT_WIDTH 60
 #define DEFAULT_HEIGHT 10
 
@@ -41,7 +41,7 @@ public:
     /*
      * Kontrola existenci vyhry nebo prohry:
      * - hráč prohral, pokud ztratil všechny své zivoty
-     * - hráč vyrohral, pokud nasbiral vsechny mince
+     * - hráč vyhral, pokud nasbiral vsechny mince
      */
     void control();
 
@@ -75,18 +75,20 @@ public:
 
     void minus_live();
 
+    std::vector<p_field> get_playing_area() const;
+
 private:
     bool quit = false;                          // je konec hry?
     bool pause = true;                          // hra pozastavena?
 
     std::unique_ptr<window> win;                                            // hraci okenko
-    size_t width, height;                                                   // rozmery hraci plochy, pocet znacek v rade pro vyhru
+    size_t width, height;                                                   // rozmery hraci plochy
     std::vector<p_field> playing_area;                                      // hraci plocha
-    int all_coins, all_enemies, all_lives;                                  //pocet minci/nepriteli, zivotu
+    int all_coins, all_enemies, all_lives;                                  // pocet minci/nepriteli, zivotu
     bool is_up = false, is_left = false, is_right = false, is_down = false; // pohyb
     timer timer;                                                            // casovac
-    int cur_coins = 0;                                                      // aktualni hrac
-    size_t player_position{};                                               // pozice hrace na hraci plose
+    int cur_coins = 0;                                                      // aktualni pocet minci hrace
+    size_t player_position;                                                 // pozice hrace na hraci plose
 
     std::mutex mutex;
     std::condition_variable cvar;

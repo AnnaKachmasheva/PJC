@@ -19,6 +19,7 @@ mario_game::mario_game() : quit(false),
             }
         }
     }
+
     playing_area[player_position] = mario;
 
     std::vector<size_t> enemies_vec = get_positions(0, DEFAULT_WIDTH * (DEFAULT_HEIGHT - 1), all_enemies);
@@ -29,6 +30,11 @@ mario_game::mario_game() : quit(false),
     std::vector<size_t> coins_vec = get_positions(0, DEFAULT_WIDTH * (DEFAULT_HEIGHT - 1), all_coins);
     for (auto co: coins_vec) {
         playing_area[co] = coin;
+    }
+
+    std::vector<size_t> earth_vec = get_positions(0, DEFAULT_WIDTH * (DEFAULT_HEIGHT - 1), all_enemies * 3);
+    for (auto eth: earth_vec) {
+        playing_area[eth] = earth;
     }
 
     //init game window
@@ -46,8 +52,11 @@ std::vector<size_t> mario_game::get_positions(size_t min, size_t max, size_t cou
     std::vector<size_t> positions;
     size_t c = count;
     while (c > 0) {
-        positions.push_back(get_random_position(min, max));
-        c--;
+        auto pos = get_random_position(min, max);
+        if (pos != player_position) {
+            positions.push_back(pos);
+            c--;
+        }
     }
     return positions;
 }
@@ -56,7 +65,6 @@ size_t mario_game::get_random_position(size_t min, size_t max) {
     return rand() % (max - min + 1) + min;
 }
 
-
 mario_game::~mario_game() {
     control();
 }
@@ -64,11 +72,10 @@ mario_game::~mario_game() {
 void mario_game::control() {
     if (all_lives == 0) {
         set_quit(true);
-
+        set_pause(true);
         win->redrawWIN(false);
     } else if (cur_coins == all_coins) {
         set_quit(true);
-
         win->redrawWIN(true);
     }
 }
@@ -160,12 +167,15 @@ void mario_game::move() {
 void mario_game::output_area() {
     std::unique_lock<std::mutex> lg(mutex);
     cvar.wait(lg);
-    if (!get_pause() && !quit)
+    if (!get_pause() && !quit) {
         win->redraw(playing_area, timer, cur_coins, all_lives, pause);
+    }
+    cvar.notify_all();
 }
 
 void mario_game::compute() {
     std::this_thread::sleep_for(std::chrono::milliseconds(PERIOD_COUNTER));
+    std::unique_lock<std::mutex> lg(mutex);
 
     // nepretrzity pohyb doprava a dolu
     if (!get_pause()) {
@@ -177,18 +187,18 @@ void mario_game::compute() {
         is_down = true;
 
         move();
+        cvar.notify_all();
     }
-
-    std::unique_lock<std::mutex> lg(mutex);
-    cvar.notify_all();
 }
 
 void mario_game::input() {
     std::unique_lock<std::mutex> lg(mutex);
     lg.unlock();
 
-    if (quit)
+    if (get_quit()) {
+        set_pause(true);
         return;
+    }
 
     char c;
     std::cin >> c;
@@ -250,4 +260,8 @@ void mario_game::minus_live() {
 
     if (all_lives < 0)
         all_lives = 0;
+}
+
+std::vector<p_field> mario_game::get_playing_area() const {
+    return playing_area;
 }

@@ -12,17 +12,16 @@
 #define COLOR_GREEN "\x1B[92m"                      // zelena barva
 #define COLOR_YELLOW "\x1b[33m"                     // zluta barva
 #define COLOR_BLUE "\x1b[34m"                       // modra barva
-
-#define BKG_GREEN   "\x1b[102m"                                  // zelene pozadi
-#define COLOR_WIN   "\x1B[48;5;52m\x1B[38;5;208m"                // oranzova barva na hnedem pozadi pro vypis viteze
-#define COLOR_DRAW  "\x1B[48;5;17m\x1B[38;5;75m"                 // blede modra barva na modrem pozadi pro vypis viteze
+#define BKG_GREEN   "\x1b[102m"                     // zelene pozadi
+#define COLOR_WIN   "\x1B[48;5;52m\x1B[38;5;208m"   // oranzova barva na hnedem pozadi pro vypis viteze
+#define COLOR_DRAW  "\x1B[48;5;17m\x1B[38;5;75m"    // blede modra barva na modrem pozadi pro vypis viteze
 
 enum p_field {
-    nothing,
-    mario,
-    earth,
-    enemy,
-    coin
+    nothing, // ' ' nic
+    mario,   // 'O' barva modra
+    earth,   // ' ' zeleny background
+    enemy,   // '*' barva cervena
+    coin     // 'o' barva zluta
 };
 
 class window {
@@ -33,7 +32,7 @@ public:
      */
     explicit window(std::ostream &outputStream, size_t width, size_t height);
 
-    ~window() { outputStream << "Konec\n"; };
+    ~window() { os << "Konec\n"; };
     /*
      * Prekresleni hraciho pole
      *
@@ -47,12 +46,7 @@ public:
     /*
      * Priprava textu nad hracim polem
      */
-    void render_header(int coins, int lives);
-
-    /*
-     * Priprava textu pod hracim polem
-     */
-    void render_footer(bool pause);
+    void render_header(int coins, int lives, bool pause);
 
     /*
      * Prekresleni hraciho pole
@@ -65,7 +59,7 @@ public:
     void redrawWIN(bool is_win);
 
 private:
-    std::ostream &outputStream;     // odkaz na vystupni proud (std::cout)
+    std::ostream &os;               // odkaz na vystupni proud (std::cout)
     std::string text;               // text vypisovany pod hraci plochou
     std::string time;               // text o uplynulem case
     size_t width, height;           // rozmery hraci plochy

@@ -3,7 +3,7 @@
 #include "catch.hpp"
 #include "../timer.hpp"
 
-TEST_CASE("Test timer", "[tests][running]") {
+TEST_CASE("Test timer", "[timer]") {
 
     SECTION("Start and stop method") {
         timer t;
