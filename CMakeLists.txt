@@ -40,7 +40,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_options(Mario PRIVATE /W4)
 endif ()
 
-
 if (${CMAKE_VERSION} VERSION_GREATER 3.5)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Mario)
 endif ()

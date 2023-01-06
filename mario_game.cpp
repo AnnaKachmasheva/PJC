@@ -32,7 +32,7 @@ mario_game::mario_game() : quit(false),
         playing_area[co] = coin;
     }
 
-    std::vector<size_t> earth_vec = get_positions(0, DEFAULT_WIDTH * (DEFAULT_HEIGHT - 1), all_enemies * 3);
+    std::vector<size_t> earth_vec = get_positions(0, DEFAULT_WIDTH * (DEFAULT_HEIGHT - 1), (all_enemies + all_enemies + all_enemies));
     for (auto eth: earth_vec) {
         playing_area[eth] = earth;
     }

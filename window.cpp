@@ -24,17 +24,15 @@ void window::redrawWIN(bool is_win) {
     } else {
         ss << COLOR_DRAW << "\n\r   === PROHRAL ===   \n" << ANSI_COLOR_RESET;
     }
-    os << ss.str() << std::endl;;
+    os << ss.str() << std::endl;
 }
 
 void window::render_header(int coins, int lives, bool pause) {
     std::stringstream ss;
-    ss << COLOR_GREEN << " SCORE: " << ANSI_COLOR_RESET;
     ss << COLOR_RED << "   LIVES: " << lives << ANSI_COLOR_RESET;
     ss << COLOR_YELLOW << "   COINS: " << coins << ANSI_COLOR_RESET;
     ss << "   TIME: " << time;
     ss << COLOR_BLUE << "   PAUSE: " << (pause ? "ON" : "OFF") << ANSI_COLOR_RESET;
-
     text = ss.str();
 }
 
@@ -81,5 +79,5 @@ void window::render_window(std::vector<p_field> player_area) {
     buffer << std::endl;
 
     buffer << "\r" << std::noskipws << text;
-    os << buffer.str() << std::endl;;
+    os << buffer.str() << std::endl;
 }

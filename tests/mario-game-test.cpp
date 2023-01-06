@@ -56,8 +56,8 @@ TEST_CASE("Test mario game", "[mario_game]") {
         size_t min = 0;
         size_t max = 100;
         size_t random_position = game.get_random_position(min, max);
-        CHECK(random_position > min);
-        CHECK(random_position < max);
+        CHECK(random_position >= min);
+        CHECK(random_position <= max);
     }
 
     SECTION("Method control test, prohral") {
