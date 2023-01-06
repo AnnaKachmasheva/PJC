@@ -20,11 +20,8 @@ add_executable(Mario
         main.cpp
         ${core-files})
 
-set(main-test
-        tests/tests-main.cpp)
-
 add_executable(tests
-        ${main-test}
+        tests/tests-main.cpp
         tests/timer-test.cpp
         tests/mario-game-test.cpp
         ${core-files})
@@ -45,4 +42,4 @@ if (${CMAKE_VERSION} VERSION_GREATER 3.5)
 endif ()
 
 enable_testing()
-add_test(NAME tests COMMAND tests)
+add_test(NAME all COMMAND tests)
